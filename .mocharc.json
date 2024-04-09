@@ -1,0 +1,8 @@
+{
+  "extension": ["ts"],
+  "spec": "src/**/__tests__/**/*.ts",
+  "require": ["source-map-support/register", "ts-node/register"],
+  "recursive": true,
+  "reporter": "spec",
+  "timeout": 10000
+}
