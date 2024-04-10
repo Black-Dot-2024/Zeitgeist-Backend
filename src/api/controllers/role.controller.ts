@@ -16,4 +16,19 @@ async function createRole(req: Request, res: Response) {
   }
 }
 
-export const RoleController = { createRole };
+/**
+ * Sends a request to the service to delete a role based off the ID
+ *
+ * @param req: Request - The request object
+ * @param res: Response - The response object
+ */
+async function deleteRole(req: Request, res: Response) {
+  try {
+    const role = await RoleService.deleteRole(req.body);
+    res.status(201).json({ role });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const RoleController = { createRole, deleteRole };

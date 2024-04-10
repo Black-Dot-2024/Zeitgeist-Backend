@@ -14,4 +14,12 @@ const router = Router();
  */
 router.post('/create', RoleController.createRole);
 
+/**
+ * @openapi
+ * /roles/delete/:id
+ *   delete:
+ *     summary: Deletes a role based off ID
+ */
+router.delete('/delete/:id', RoleController.deleteRole);
+
 export const RoleRouter = router;

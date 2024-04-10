@@ -15,6 +15,17 @@ async function findRoleById(id: string): Promise<Role | null> {
 }
 
 /**
+ * Verifies if the role does not exist in the database.
+ * 
+ * @param id: string - The unique identifier of the role to find
+ * @returns {Promise<boolean>} A promise that resolves if the role is null
+ */
+async function doesRoleNotExist(id: string): Promise<boolean> {
+  const role = await findRoleById(id);
+  return role === null;
+}
+
+/**
  * Creates a new role with the provided data in the database.
  *
  * @param params: Role - The data to create the role with
@@ -43,4 +54,4 @@ async function deleteRoleById(id: string): Promise<Role> {
   });
 }
 
-export const RoleRepository = { findRoleById, createRole, deleteRoleById };
+export const RoleRepository = { findRoleById, doesRoleNotExist, createRole, deleteRoleById };
