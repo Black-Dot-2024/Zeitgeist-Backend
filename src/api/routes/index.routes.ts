@@ -5,6 +5,6 @@ import { RoleRouter } from './role.routes';
 const baseRouter = Router();
 
 baseRouter.use('/dummy', DummyRouter);
-baseRouter.use('/role', RoleRouter);
+baseRouter.use('/roles', RoleRouter);
 
 export { baseRouter };

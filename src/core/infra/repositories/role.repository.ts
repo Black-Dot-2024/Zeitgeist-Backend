@@ -31,4 +31,16 @@ async function createRole(params: Role): Promise<Role> {
   });
 }
 
-export const RoleRepository = { findRoleById, createRole };
+/**
+ * Deletes a role by its unique identifier.
+ *
+ * @param id: UUID - The unique identifier of the role to delete
+ * @returns {Promise<Role>} A promise that resolves to the deleted role
+ */
+async function deleteRoleById(id: string): Promise<Role> {
+  return await Prisma.role.delete({
+    where: { id },
+  });
+}
+
+export const RoleRepository = { findRoleById, createRole, deleteRoleById };
