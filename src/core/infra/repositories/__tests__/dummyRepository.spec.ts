@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { validate as uuidValidate } from 'uuid';
 import { Dummy } from '../../../domain/entities/dummy.entity';
 import { DummyRepository } from '../dummy.repository';
 
@@ -10,7 +11,7 @@ describe('DummyRepository', () => {
       expect(result).to.be.an('array').that.is.not.empty;
 
       result.forEach((dummy: Dummy) => {
-        expect(dummy.id).to.match(/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/);
+        expect(uuidValidate(dummy.id)).to.be.true;
         expect(dummy.name).to.be.a('string');
       });
     });
