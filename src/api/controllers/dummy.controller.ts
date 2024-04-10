@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getData } from '../../core/app/services/dummy.services';
+import { DummyService } from '../../core/app/services/dummy.services';
 
 /**
  * Gets dummy data from the service and sends it as a response
@@ -13,11 +13,11 @@ import { getData } from '../../core/app/services/dummy.services';
  */
 async function getDummyData(req: Request, res: Response) {
   try {
-    const data = await getData();
+    const data = await DummyService.getData();
     res.status(200).json({ data });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 }
 
-export { getDummyData };
+export const DummyController = { getDummyData };

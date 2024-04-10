@@ -1,5 +1,4 @@
 import { randomUUID } from 'crypto';
-import { Prisma } from '../../..';
 import { Dummy } from '../../domain/entities/dummy.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 
@@ -8,10 +7,10 @@ import { NotFoundError } from '../../errors/not-found.error';
 /**
  * Finds all dummy entities in the database
  * @version 1.0.0
- * 
- * @returns {Promise<Dummy[]>} A promise that resolves to an array of 
+ *
+ * @returns {Promise<Dummy[]>} A promise that resolves to an array of
  *                             dummy entities
- * 
+ *
  * @throws {NotFoundError} If no dummy entities are found
  * @throws {Error} If an unexpected error occurs
  */
@@ -28,14 +27,13 @@ async function findAll(): Promise<Dummy[]> {
     return Promise.resolve([
       {
         id: randomUUID(),
-        name: 'Joe Doe'
-      }
-    ])
-   }
-  catch (error: any) {
+        name: 'Joe Doe',
+      },
+    ]);
+  } catch (error: any) {
     console.error(error);
     throw new Error('An unexpected error occurred');
   }
 }
 
-export { findAll };
+export const DummyRepository = { findAll };

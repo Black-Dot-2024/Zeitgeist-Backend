@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getDummyData } from '../controllers/dummy.controller';
+import { DummyController } from '../controllers/dummy.controller';
 
 const router = Router();
 
@@ -30,6 +30,6 @@ const router = Router();
  *                     description: El nombre del dato dummy
  *                     example: "Dato Dummy"
  */
-router.get('/data', getDummyData);
+router.get('/data', DummyController.getDummyData);
 
 export { router as DummyRouter };

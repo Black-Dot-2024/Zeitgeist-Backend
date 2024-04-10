@@ -1,5 +1,5 @@
 import { Dummy } from '../../domain/entities/dummy.entity';
-import { findAll } from '../../infra/repositories/dummy.repository';
+import { DummyRepository } from '../../infra/repositories/dummy.repository';
 
 /**
  * Gets dummy data from the repository
@@ -11,7 +11,7 @@ import { findAll } from '../../infra/repositories/dummy.repository';
  */
 async function getData(): Promise<Dummy[]> {
   try {
-    const dummyRecords = await findAll();
+    const dummyRecords = await DummyRepository.findAll();
     return dummyRecords;
   } catch (error: any) {
     console.error('Error: ', error);
@@ -19,4 +19,4 @@ async function getData(): Promise<Dummy[]> {
   }
 }
 
-export { getData };
+export const DummyService = { getData };

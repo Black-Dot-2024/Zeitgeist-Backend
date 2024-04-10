@@ -22,13 +22,14 @@ model company {
   email                     String?                 @unique @db.VarChar(180)
   phone_number              String?                 @db.VarChar(15)
   landline_phone            String?                 @db.VarChar(15)
+  archived                  Boolean                 @default(false)   
   created_at                DateTime                @default(now()) @db.Timestamp(6)
   updated_at                DateTime?               @db.Timestamp(6)
   id_company_direct_contact String?                 @db.Uuid
   id_form                   String?                 @db.Uuid
   company_direct_contact    company_direct_contact? @relation(fields: [id_company_direct_contact], references: [id], onDelete: NoAction, onUpdate: NoAction)
   form                      form?                   @relation(fields: [id_form], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  project                   project[]
+  project                   project[]            
 }
 
 model company_direct_contact {
@@ -206,6 +207,7 @@ model project {
   total_hours   Decimal?  @db.Decimal(8, 2)
   periodicity   String?   @db.VarChar(256)
   is_chargeable Boolean?
+  area          String?    @db.VarChar(256)
   created_at    DateTime  @default(now()) @db.Timestamp(6)
   updated_at    DateTime? @db.Timestamp(6)
   id_company    String    @db.Uuid
