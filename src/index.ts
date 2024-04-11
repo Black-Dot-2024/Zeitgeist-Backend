@@ -10,7 +10,7 @@ export const Prisma: PrismaClient = new PrismaClient(); // Instancia de Prisma C
 const app: Express = express();
 
 const HOST: string = process.env[EnvConfigKeys.HOST] || 'localhost';
-const PORT: number = process.env[EnvConfigKeys.PORT] ? parseInt(process.env[EnvConfigKeys.PORT]) : 4000;
+const PORT: number = process.env[EnvConfigKeys.PORT] ? parseInt(process.env[EnvConfigKeys.PORT]) : 6000;
 
 app.use(express.json());
 app.use(baseRouter);
