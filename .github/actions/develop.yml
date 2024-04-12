@@ -1,67 +1,62 @@
 name: Node.js CI
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     branches:
       - develop
 
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
-      
-    - name: Install pnpm
-      run: npm install -g pnpm
+      - uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: pnpm install
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-    - name: Check for leaked secrets
-      uses: zricethezav/gitleaks-action@v1.6.0
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-    - name: Compile
-      run: pnpm run build
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Run Test
-      run: pnpm test
+      - name: Check for leaked secrets
+        uses: zricethezav/gitleaks-action@v1.6.0
 
-  - name: Run Tests and Capture Results
-      id: run_tests
-      run: |
-        if pnpm test; then
-          echo "Tests passed successfully" > test_results.md
-          echo "::set-output name=result::$(cat test_results.md)"
-        else
-          echo "Tests failed" > test_results.md
-          echo "::set-output name=result::$(cat test_results.md)"
-          exit 1
-        fi
-      env:
-        CI: true
+      - name: Compile
+        run: pnpm run build
 
-    - name: Comment PR with test results
-      if: github.event_name == 'pull_request'
-      uses: unsplash/comment-on-pr@v1.2.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        msg: |
-          📝 **Test Results:**
-          ```
-          ${{ steps.run_tests.outputs.result }}
-          ```
-        check_for_duplicate_messages: true
+      - name: Run Tests
+        id: run_tests
+        run: |
+          if pnpm test; then
+            echo "Tests passed successfully" > test_results.md
+            echo "::set-output name=result::$(cat test_results.md)"
+          else
+            echo "Tests failed" > test_results.md
+            echo "::set-output name=result::$(cat test_results.md)"
+            exit 1
+          fi
+        env:
+          CI: true
+
+      - name: Comment PR with test results
+        if: github.event_name == 'pull_request'
+        uses: unsplash/comment-on-pr@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: |
+            📝 **Test Results:**
+            ```
+            ${{ steps.run_tests.outputs.result }}
+            ```
+          check_for_duplicate_messages: true
