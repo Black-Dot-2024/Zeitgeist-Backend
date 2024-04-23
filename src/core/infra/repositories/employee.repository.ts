@@ -38,78 +38,78 @@ async function findById(id: string): Promise<EmployeeEntity> {
 }
 
 async function updateRoleById(id: string, roleId: string): Promise<EmployeeEntity> {
-    try {
-        const data = await Prisma.employee.update({
-            where: {
-                id: id,
-            },
-            data: {
-                id_role: roleId
-            }
-        });
+  try {
+    const data = await Prisma.employee.update({
+      where: {
+        id: id,
+      },
+      data: {
+        id_role: roleId,
+      },
+    });
 
-        if (!data) {
-            throw new NotFoundError(RESOURCE_NAME);
-        }
-
-        return mapEmployeeEntityFromDbModel(data);
-    } catch (error: unknown) {
-        throw new Error('Employee repository error');
+    if (!data) {
+      throw new NotFoundError(RESOURCE_NAME);
     }
+
+    return mapEmployeeEntityFromDbModel(data);
+  } catch (error: unknown) {
+    throw new Error('Employee repository error');
+  }
 }
 
 async function findByEmail(email: string): Promise<EmployeeEntity | null> {
-    try {
-      const data = await Prisma.employee.findFirst({
-        where: {
-          email,
-        },
-      });
-  
-      if (!data) {
-        return null;
-      }
-  
-      return mapEmployeeEntityFromDbModel(data);
-    } catch (error: unknown) {
-      throw new Error(`Failed to fetch employee by email: ${error}`);
-    }
-  }
+  try {
+    const data = await Prisma.employee.findFirst({
+      where: {
+        email,
+      },
+    });
 
-  async function existByEmail(email: string): Promise<boolean> {
-    try {
-      const data = await Prisma.employee.findUnique({
-        where: {
-          email: email,
-        },
-      });
-  
-      return !!data;
-    } catch (error: unknown) {
-      throw new Error(`Failed to find employee by email: ${error}`);
+    if (!data) {
+      return null;
     }
+
+    return mapEmployeeEntityFromDbModel(data);
+  } catch (error: unknown) {
+    throw new Error(`Failed to fetch employee by email: ${error}`);
   }
-  
-  async function create(entity: EmployeeEntity): Promise<EmployeeEntity> {
-    try {
-      await Prisma.employee.create({
-        data: {
-          id: entity.id,
-          first_name: entity.firstName,
-          last_name: entity.lastName,
-          email: entity.email,
-          image_url: entity.imageUrl,
-          created_at: entity.createdAt,
-          updated_at: entity.updatedAt,
-          id_department: entity.idDepartment,
-          id_role: entity.idRole,
-        },
-      });
-  
-      return entity;
-    } catch (error: any) {
-      throw new Error(`Failed to create employee: ${error.message}`);
-    }
+}
+
+async function existByEmail(email: string): Promise<boolean> {
+  try {
+    const data = await Prisma.employee.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    return !!data;
+  } catch (error: unknown) {
+    throw new Error(`Failed to find employee by email: ${error}`);
   }
-  
-  export const EmployeeRepository = { create, findAll, findByEmail, findById, existByEmail, updateRoleById };
+}
+
+async function create(entity: EmployeeEntity): Promise<EmployeeEntity> {
+  try {
+    await Prisma.employee.create({
+      data: {
+        id: entity.id,
+        first_name: entity.firstName,
+        last_name: entity.lastName,
+        email: entity.email,
+        image_url: entity.imageUrl,
+        created_at: entity.createdAt,
+        updated_at: entity.updatedAt,
+        id_department: entity.idDepartment,
+        id_role: entity.idRole,
+      },
+    });
+
+    return entity;
+  } catch (error: any) {
+    throw new Error(`Failed to create employee: ${error.message}`);
+  }
+}
+
+export const EmployeeRepository = { create, findAll, findByEmail, findById, existByEmail, updateRoleById };
