@@ -1,5 +1,8 @@
 import { Router } from 'express';
+import { SupportedRoles } from '../../utils/enums';
 import { CompanyController } from '../controllers/company.controller';
+import { checkAuthToken } from '../middlewares/auth.middleware';
+import { checkAuthRole } from '../middlewares/rbac.middleware';
 
 const router = Router();
 
@@ -26,6 +29,11 @@ const router = Router();
  *                    description: El ID de la compañía
  *                    example: "f4105be8-3b4a-44bb-8707-d1e3eec927ba"
  */
-router.get('/', CompanyController.getAll);
+router.get(
+  '/',
+  checkAuthToken,
+  checkAuthRole([SupportedRoles.CONTABLE, SupportedRoles.LEGAL, SupportedRoles.ADMIN]),
+  CompanyController.getAll
+);
 
 export { router as CompanyRouter };

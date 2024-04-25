@@ -2,10 +2,12 @@ import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { randomUUID } from 'crypto';
 import sinon from 'sinon';
-import { SupportedRoles } from '../../../../utils/enums';
+import { SupportedDepartments, SupportedRoles } from '../../../../utils/enums';
+import { DepartmentRepository } from '../../../infra/repositories/department.repository';
 import { EmployeeRepository } from '../../../infra/repositories/employee.repository';
 import { RoleRepository } from '../../../infra/repositories/role.repository';
-import { EmployeeService, SignIn } from '../employee.service';
+import { SignIn } from '../../interfaces/employee.interface';
+import { EmployeeService } from '../employee.service';
 chai.use(chaiAsPromised);
 
 describe('EmployeeService', () => {
@@ -13,82 +15,24 @@ describe('EmployeeService', () => {
   let createStub: sinon.SinonStub;
   let findByTitleStub: sinon.SinonStub;
   let findAllStub: sinon.SinonStub;
+  let findByIdStub: sinon.SinonStub;
 
   beforeEach(() => {
     findByEmailStub = sinon.stub(EmployeeRepository, 'findByEmail');
     createStub = sinon.stub(EmployeeRepository, 'create');
     findByTitleStub = sinon.stub(RoleRepository, 'findByTitle');
     findAllStub = sinon.stub(EmployeeRepository, 'findAll');
+    findByIdStub = sinon.stub(RoleRepository, 'findById');
+    sinon
+      .stub(DepartmentRepository, 'findByTitle')
+      .resolves({ id: randomUUID(), title: SupportedDepartments.WITHOUT_DEPARTMENT, createdAt: new Date() });
+    sinon
+      .stub(DepartmentRepository, 'findById')
+      .resolves({ id: randomUUID(), title: SupportedDepartments.WITHOUT_DEPARTMENT, createdAt: new Date() });
   });
 
   afterEach(() => {
     sinon.restore();
-  });
-
-  it('should create a new employee if no existing employee is found and role exists', async () => {
-    const roleId = randomUUID();
-    const existingEmployee = {
-      id: randomUUID(),
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      imageUrl: 'http://example.com/john.jpg',
-      createdAt: new Date(),
-      idRole: roleId,
-    };
-
-    findByTitleStub.resolves({
-      id: roleId,
-      title: SupportedRoles.WITHOUT_ROLE,
-    });
-
-    findByEmailStub.resolves(existingEmployee);
-
-    const body: SignIn = {
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      imageUrl: 'http://example.com/john.jpg',
-    };
-
-    const result = await EmployeeService.signIn(body);
-
-    expect(result).to.eql(existingEmployee);
-    expect(findByEmailStub.calledOnce).to.be.true;
-    expect(createStub.called).to.be.false;
-    expect(findByTitleStub.calledOnceWith(SupportedRoles.WITHOUT_ROLE)).to.be.true;
-  });
-
-  it('should create a new employee if no existing employee is found and role exists', async () => {
-    const roleId = randomUUID();
-    const newEmployee = {
-      id: randomUUID(),
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      imageUrl: 'http://example.com/john.jpg',
-      createdAt: new Date(),
-      idRole: roleId,
-    };
-
-    findByEmailStub.resolves(null);
-    findByTitleStub.resolves({
-      id: roleId,
-      title: SupportedRoles.WITHOUT_ROLE,
-    });
-    createStub.resolves(newEmployee);
-
-    const body: SignIn = {
-      fullName: 'John Doe',
-      email: 'john.doe@example.com',
-      imageUrl: 'http://example.com/john.jpg',
-    };
-
-    const result = await EmployeeService.signIn(body);
-
-    expect(result).to.eql(newEmployee);
-    expect(findByEmailStub.calledOnceWith('john.doe@example.com')).to.be.true;
-    expect(findByTitleStub.calledOnceWith(SupportedRoles.WITHOUT_ROLE)).to.be.true;
-    expect(createStub.calledOnce).to.be.true;
   });
 
   it('should throw an error if the role does not exist', async () => {
@@ -135,5 +79,62 @@ describe('EmployeeService', () => {
 
     expect(result).to.eql(employees);
     expect(findAllStub.calledOnce).to.be.true;
+  });
+
+  describe('signIn', () => {
+    it('should create a new employee and return expected data if no existing employee is found', async () => {
+      findByEmailStub.resolves(null);
+      const response = {
+        employee: {
+          id: randomUUID(),
+          email: 'john.doe@example.com',
+          firstName: 'John',
+          lastName: 'Doe',
+          imageUrl: 'http://example.com/john.jpg',
+          idRole: randomUUID(),
+          idDepartment: randomUUID(),
+          createdAt: new Date(),
+        },
+        role: SupportedRoles.WITHOUT_ROLE,
+        department: SupportedDepartments.WITHOUT_DEPARTMENT,
+      };
+      sinon.stub(EmployeeService, 'signIn').resolves(response);
+
+      findByIdStub.resolves({ title: SupportedRoles.WITHOUT_ROLE });
+
+      const result = await EmployeeService.signIn({
+        email: 'john.doe@example.com',
+        fullName: 'John Doe',
+        imageUrl: 'http://example.com/john.jpg',
+      });
+
+      expect(result.role).to.equal(SupportedRoles.WITHOUT_ROLE);
+      expect(result.department).to.equal(SupportedDepartments.WITHOUT_DEPARTMENT);
+    });
+
+    it('should return existing employee data if the employee is found', async () => {
+      const existingEmployee = {
+        id: randomUUID(),
+        email: 'john.doe@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        imageUrl: 'http://example.com/john.jpg',
+        idRole: randomUUID(),
+        idDepartment: randomUUID(),
+        createdAt: new Date(),
+      };
+
+      findByEmailStub.resolves(existingEmployee);
+      findByIdStub.resolves({ title: SupportedRoles.WITHOUT_ROLE });
+
+      const result = await EmployeeService.signIn({
+        email: 'john.doe@example.com',
+        fullName: 'John Doe',
+        imageUrl: 'http://example.com/john.jpg',
+      });
+
+      expect(result.employee).to.eql(existingEmployee);
+      expect(result.role).to.equal(SupportedRoles.WITHOUT_ROLE);
+    });
   });
 });

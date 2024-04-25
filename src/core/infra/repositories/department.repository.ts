@@ -5,7 +5,7 @@ import { mapDepartmentEntityFromDbModelToDbModel } from '../mappers/department-e
 
 async function findById(id: string): Promise<DepartmentEntity> {
   try {
-    const department = await Prisma.department.findUniqueOrThrow({
+    const department = await Prisma.department.findUnique({
       where: { id: id },
     });
 
