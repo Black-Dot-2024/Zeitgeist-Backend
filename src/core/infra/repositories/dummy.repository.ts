@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto';
 import { Dummy } from '../../domain/entities/dummy.entity';
-import { NotFoundError } from '../../errors/not-found.error';
 
 // const RESOURCE_NAME = 'DummyInfo';
 

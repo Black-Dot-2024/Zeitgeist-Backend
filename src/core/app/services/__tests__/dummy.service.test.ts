@@ -6,10 +6,10 @@ describe('DummyService', () => {
   describe('getData', () => {
     it('should not do anything complex', async () => {
       // Arrange
-      let simpleTruth = true;
+      const simpleTruth = true;
 
       // Act
-      let result = true;
+      const result = true;
 
       // Assert
       expect(result).to.equal(simpleTruth);
