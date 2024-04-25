@@ -4,6 +4,8 @@ import { randomUUID } from 'crypto';
 import sinon from 'sinon';
 import { TaskStatus } from '../../../../utils/enums';
 import { BareboneTask } from '../../../domain/entities/task.entity';
+import { EmployeeTaskRepository } from '../../../infra/repositories/employee-task.repository';
+import { EmployeeRepository } from '../../../infra/repositories/employee.repository';
 import { ProjectRepository } from '../../../infra/repositories/project.repository';
 import { TaskRepository } from '../../../infra/repositories/tasks.repository';
 import { Task } from '../../interfaces/project-report.interface';
@@ -15,12 +17,16 @@ describe('TaskService', () => {
   let createTaskStub: sinon.SinonStub;
   let findTasksByEmployeeIdStub: sinon.SinonStub;
   let projectRepositoryStub: sinon.SinonStub;
+  let employeeRepositoryStub: sinon.SinonStub;
+  let employeeTaskRepositoryStub: sinon.SinonStub;
 
   beforeEach(() => {
     createTaskStub = sinon.stub(TaskRepository, 'createTask');
     findTasksByEmployeeIdStub = sinon.stub(TaskRepository, 'findTasksByIds');
 
     projectRepositoryStub = sinon.stub(ProjectRepository, 'findById');
+    employeeRepositoryStub = sinon.stub(EmployeeRepository, 'findById');
+    employeeTaskRepositoryStub = sinon.stub(EmployeeTaskRepository, 'findTasksByEmployeeId');
   });
 
   afterEach(() => {
@@ -130,5 +136,52 @@ describe('TaskService', () => {
     });
   });
 
-  describe('findTasksByEmployeeId', () => {});
+  describe('findTasksByEmployeeId', () => {
+    it('Should return an array of tasks if the employee ID is valid', async () => {
+      const tasks: Task[] = Array.from({ length: 10 }, () => ({
+        id: randomUUID(),
+        title: faker.lorem.words(3),
+        description: faker.lorem.sentence(),
+        status: faker.helpers.arrayElement(Object.values(TaskStatus)),
+        waitingFor: faker.person.fullName(),
+        startDate: faker.date.recent(),
+        endDate: faker.date.future(),
+        workedHours: faker.number.int(),
+        createdAt: faker.date.recent(),
+        updatedAt: faker.date.future(),
+        idProject: randomUUID(),
+      }));
+
+      const employeeId = randomUUID();
+      const employee = { id: employeeId };
+      const employeeTasks = tasks.map(task => ({ idTask: task.id }));
+      const taskIds = tasks.map(task => task.id);
+
+      employeeRepositoryStub.resolves(employee);
+      employeeTaskRepositoryStub.resolves(employeeTasks);
+      findTasksByEmployeeIdStub.resolves(tasks);
+
+      const result = await TaskService.findTasksByEmployeeId(employeeId);
+
+      expect(result).to.deep.equal(tasks);
+      expect(employeeRepositoryStub.calledOnceWithExactly(employeeId)).to.be.true;
+      expect(employeeTaskRepositoryStub.calledOnceWithExactly(employeeId)).to.be.true;
+      expect(findTasksByEmployeeIdStub.calledOnceWithExactly(taskIds)).to.be.true;
+    });
+
+    it('Should return an empty array if the employee has no tasks', async () => {
+      const employeeId = randomUUID();
+      const employee = { id: employeeId };
+
+      employeeRepositoryStub.resolves(employee);
+      employeeTaskRepositoryStub.resolves([]);
+
+      const result = await TaskService.findTasksByEmployeeId(employeeId);
+
+      expect(result).to.be.an('array').that.is.empty;
+      expect(employeeRepositoryStub.calledOnceWithExactly(employeeId)).to.be.true;
+      expect(employeeTaskRepositoryStub.calledOnceWithExactly(employeeId)).to.be.true;
+      expect(findTasksByEmployeeIdStub.notCalled).to.be.true;
+    });
+  });
 });

@@ -48,15 +48,14 @@ async function createTask(newTask: BareboneTask): Promise<Task | null> {
  */
 async function findTasksByEmployeeId(employeeId: string): Promise<Task[]> {
   try {
-    const employeeIsValid = await EmployeeRepository.findById(employeeId);
-    if (!employeeIsValid) throw new Error('Employee ID is not valid');
+    const employee = await EmployeeRepository.findById(employeeId);
+    if (!employee) {
+      throw new Error('Employee not found');
+    }
 
     const relatedTasks = await EmployeeTaskRepository.findTasksByEmployeeId(employeeId);
 
-    console.log(relatedTasks);
-
     const taskIds = relatedTasks.map(task => task.idTask);
-
     if (taskIds.length === 0) return [];
 
     return await TaskRepository.findTasksByIds(taskIds);
