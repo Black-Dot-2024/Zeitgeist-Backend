@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { EmployeeTaskService } from '../../core/app/services/employee-task.services';
+import { TaskService } from '../../core/app/services/task.service';
 
 const getTasksByEmployeeIdSchema = z.object({
-  userId: z.string(),
+  employeeId: z.string(),
 });
 
 /**
@@ -15,13 +15,15 @@ const getTasksByEmployeeIdSchema = z.object({
  * @return {Promise<Response>} - Response object.
  */
 async function getTasksByEmployeeId(req: Request, res: Response) {
-  const { userId } = getTasksByEmployeeIdSchema.parse(req.body);
+  const { employeeId } = req.params;
 
   try {
-    const tasks = await EmployeeTaskService.getTasksByEmployeeId(userId);
+    getTasksByEmployeeIdSchema.parse({ employeeId });
+    const tasks = await TaskService.findTasksByEmployeeId(employeeId);
+
     res.status(200).json(tasks);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: 'Invalid employeeId' });
   }
 }
 

@@ -77,4 +77,29 @@ async function findTasksByProjectId(idProject: string): Promise<Task[]> {
   }
 }
 
-export const TaskRepository = { createTask, findTasksByProjectId };
+/**
+ * Finds the tasks based of the array of ids.
+ *
+ * @param ids: string[] - Array of ids to be found.
+ * @return {Promise<Task[]>} - Array of tasks found.
+ *
+ * @throws {Error} - If an error occurs when finding the tasks.
+ * @throws {NotFoundError} - If no tasks are found.
+ */
+async function findTasksByIds(ids: string[]): Promise<Task[]> {
+  try {
+    const data = await Prisma.task.findMany({
+      where: { id: { in: ids } },
+    });
+
+    if (!data) {
+      throw new NotFoundError(RESOURCE_NAME);
+    }
+
+    return data.map(mapTaskEntityFromDbModel);
+  } catch (error: unknown) {
+    throw new Error(`${RESOURCE_NAME} repository error`);
+  }
+}
+
+export const TaskRepository = { createTask, findTasksByProjectId, findTasksByIds };

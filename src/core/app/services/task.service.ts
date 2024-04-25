@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto';
 import { BareboneTask, Task } from '../../domain/entities/task.entity';
+import { EmployeeTaskRepository } from '../../infra/repositories/employee-task.repository';
+import { EmployeeRepository } from '../../infra/repositories/employee.repository';
 import { ProjectRepository } from '../../infra/repositories/project.repository';
 import { TaskRepository } from '../../infra/repositories/tasks.repository';
 
@@ -36,4 +38,31 @@ async function createTask(newTask: BareboneTask): Promise<Task | null> {
   }
 }
 
-export const TaskService = { createTask };
+/**
+ * Finds the tasks related to an employee
+ *
+ * @param employeeId: string - The id of the employee to find the tasks
+ * @return {Promise<Task[]>} - Array of tasks found.
+ *
+ * @throws {Error} - If an error occurs when fetching the tasks.
+ */
+async function findTasksByEmployeeId(employeeId: string): Promise<Task[]> {
+  try {
+    const employeeIsValid = await EmployeeRepository.findById(employeeId);
+    if (!employeeIsValid) throw new Error('Employee ID is not valid');
+
+    const relatedTasks = await EmployeeTaskRepository.findTasksByEmployeeId(employeeId);
+
+    console.log(relatedTasks);
+
+    const taskIds = relatedTasks.map(task => task.idTask);
+
+    if (taskIds.length === 0) return [];
+
+    return await TaskRepository.findTasksByIds(taskIds);
+  } catch (error: unknown) {
+    throw new Error(`Error finding the related tasks for employee`);
+  }
+}
+
+export const TaskService = { createTask, findTasksByEmployeeId };
