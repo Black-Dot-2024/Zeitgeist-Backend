@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { TaskService } from '../../core/app/services/task.services';
+import { TaskService } from '../../core/app/services/task.service';
 import { BareboneTask } from '../../core/domain/entities/task.entity';
 import { TaskStatus } from '../../utils/enums';
 

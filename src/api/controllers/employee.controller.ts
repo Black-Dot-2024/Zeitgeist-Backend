@@ -1,14 +1,14 @@
-import { Request, Response, json } from 'express';
-import { EmployeeService } from '../../core/app/services/employee.services';
+import { Request, Response } from 'express';
+import * as z from 'zod';
+import { EmployeeService } from '../../core/app/services/employee.service';
 import { NotFoundError } from '../../core/errors/not-found.error';
-import * as z from 'zod'
 
 const authSchema = z.object({
   auth: z.object({
     name: z.string(),
     email: z.string().email(),
     picture: z.string().url(),
-  })
+  }),
 });
 
 async function userExists(req: Request, res: Response) {
@@ -32,9 +32,9 @@ async function userExists(req: Request, res: Response) {
 
 /**
  * Controller to get all employees
- * 
- * @param req 
- * @param res 
+ *
+ * @param req
+ * @param res
  */
 async function getAllEmployees(req: Request, res: Response) {
   try {

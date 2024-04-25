@@ -15,7 +15,7 @@ import { Project, ProjectStatistics, Report, Task } from '../interfaces/project-
  * @description Las tareas se agrupan segun su estatus y se inicializan en 0.
  *
  */
-function initilizeStatistics(total: Number): ProjectStatistics {
+function initilizeStatistics(total: number): ProjectStatistics {
   return {
     total: total,
     done: 0,
@@ -43,12 +43,11 @@ function initilizeStatistics(total: Number): ProjectStatistics {
  */
 async function getReport(id: string): Promise<Report> {
   try {
-    let report: Report;
     const rawProject = await ProjectRepository.findById(id);
     const company = await CompanyRepository.findById(rawProject.idCompany);
 
     const project: Project = { ...rawProject, companyName: company.name };
-    report = { project: project };
+    const report: Report = { project: project };
 
     const rawTasks = await TaskRepository.findTasksByProjectId(id);
     const employeeTask = await EmployeeTaskRepository.findAll();

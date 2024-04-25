@@ -60,9 +60,9 @@ export interface Task {
   endDate?: Date;
 
   /**
-   * @param workedHours: Number - Horas trabajadas en la tarea
+   * @param workedHours: number - Horas trabajadas en la tarea
    */
-  workedHours?: Number;
+  workedHours?: number;
 
   /**
    * @param createdAt: Date - Fecha de registro de la tarea

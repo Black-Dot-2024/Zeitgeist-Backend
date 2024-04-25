@@ -32,7 +32,7 @@ async function findAll(): Promise<CompanyEntity[]> {
 
 async function findById(id: string): Promise<CompanyEntity> {
   try {
-    let data = await Prisma.company.findUnique({
+    const data = await Prisma.company.findUnique({
       where: {
         id: id,
       },

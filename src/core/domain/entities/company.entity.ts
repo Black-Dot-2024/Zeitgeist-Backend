@@ -48,7 +48,7 @@ export interface CompanyEntity {
    */
   archived?: boolean;
   /**
-   * @param idCompanyDirectContact: string - Id for company direct contact 
+   * @param idCompanyDirectContact: string - Id for company direct contact
    */
   idCompanyDirectContact?: string | null;
   /**

@@ -2,12 +2,12 @@ import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { randomUUID } from 'crypto';
 import sinon from 'sinon';
-import { ProjectRepository } from '../../../infra/repositories/project.repository';
 import { CompanyRepository } from '../../../infra/repositories/company.repository';
-import { EmployeeRepository } from '../../../infra/repositories/employee.repository';
 import { EmployeeTaskRepository } from '../../../infra/repositories/employee-task.repository';
+import { EmployeeRepository } from '../../../infra/repositories/employee.repository';
+import { ProjectRepository } from '../../../infra/repositories/project.repository';
 import { TaskRepository } from '../../../infra/repositories/tasks.repository';
-import { ProjectReportService } from '../project-report.services';
+import { ProjectReportService } from '../project-report.service';
 
 chai.use(chaiAsPromised);
 
@@ -42,7 +42,7 @@ describe('ProjectReportService', () => {
         archived: false,
         createdAt: new Date(),
       };
-      
+
       const projectId = randomUUID();
       const existingProject = {
         id: projectId,
@@ -53,10 +53,9 @@ describe('ProjectReportService', () => {
         startDate: new Date(),
         createdAt: new Date(),
         idCompany: companyId,
-         
-      }
-      
-      const employeeId =  randomUUID();
+      };
+
+      const employeeId = randomUUID();
       const existingEmployee = {
         id: employeeId,
         firstName: 'John',
@@ -94,9 +93,15 @@ describe('ProjectReportService', () => {
       findTasksByProjectIdStub.resolves([existingTask]);
 
       const existingReport = {
-        project: {...existingProject, companyName: existingCompany.name},
-        tasks: [{...existingTask, employeeFirstName: existingEmployee.firstName, employeeLastName: existingEmployee.lastName}],
-        statistics: { 
+        project: { ...existingProject, companyName: existingCompany.name },
+        tasks: [
+          {
+            ...existingTask,
+            employeeFirstName: existingEmployee.firstName,
+            employeeLastName: existingEmployee.lastName,
+          },
+        ],
+        statistics: {
           total: 1,
           done: 0,
           inprogress: 0,
@@ -116,9 +121,8 @@ describe('ProjectReportService', () => {
       expect(findTasksByProjectIdStub.calledOnce).to.be.true;
       expect(findAllEmployeesStub.calledOnce).to.be.true;
       expect(findAllEmployeeTaskStub.calledOnce).to.be.true;
-
     });
-    
+
     it('should throw an error if the project id does not exist', async () => {
       const errorMessage = 'An unexpected error occurred';
       findProjectByIdStub.rejects(new Error(errorMessage));

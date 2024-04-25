@@ -1,4 +1,4 @@
-import { Decimal } from "@prisma/client/runtime/library";
+import { Decimal } from '@prisma/client/runtime/library';
 
 export interface Project {
   id: string;
@@ -27,7 +27,7 @@ export interface Task {
   waitingFor?: string;
   startDate: Date;
   endDate?: Date;
-  workedHours?: Number;
+  workedHours?: number;
   createdAt: Date;
   updatedAt?: Date;
   idProject: string;
@@ -36,14 +36,14 @@ export interface Task {
 }
 
 export interface ProjectStatistics {
-  total: Number;
-  done: Number;
-  inprogress: Number;
-  underrevision: Number;
-  delayed: Number;
-  postponed: Number;
-  notstarted: Number;
-  cancelled: Number;
+  total: number;
+  done: number;
+  inprogress: number;
+  underrevision: number;
+  delayed: number;
+  postponed: number;
+  notstarted: number;
+  cancelled: number;
 }
 
 export interface Report {

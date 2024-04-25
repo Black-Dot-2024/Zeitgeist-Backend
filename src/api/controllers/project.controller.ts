@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { ProjectReportService } from '../../core/app/services/project-report.services';
-import { ProjectService } from '../../core/app/services/project.services';
+import { ProjectReportService } from '../../core/app/services/project-report.service';
+import { ProjectService } from '../../core/app/services/project.service';
 
 const reportSchema = z.object({
   id: z.string().min(1, { message: 'projectId cannot be empty' }),

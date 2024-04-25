@@ -4,7 +4,7 @@ import sinon, { SinonStubbedInstance } from 'sinon';
 import { ProjectStatus } from '../../../../utils/enums';
 import { ProjectEntity } from '../../../domain/entities/project.entity';
 import { ProjectRepository } from '../../../infra/repositories/project.repository';
-import { ProjectService } from '../project.services';
+import { ProjectService } from '../project.service';
 
 describe('ProjectService', () => {
   let projectService: typeof ProjectService;

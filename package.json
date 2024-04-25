@@ -10,12 +10,19 @@
     "test": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' mocha --detectOpenHandles --exit",
     "format": "prettier --write .",
     "prepare": "husky install",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "prisma:studio": "prisma studio",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:pull-schema": "prisma db pull",
     "prisma:migrate:status": "prisma migrate status"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm run lint"
+    }
   },
   "keywords": [],
   "author": "",

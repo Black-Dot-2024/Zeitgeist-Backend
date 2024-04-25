@@ -1,9 +1,3 @@
-/**
- * @description Los enums que estan en diccionario de datos los pondremos como constantes aqui
- */
-
-export enum AllowedGenders {}
-
 export enum SupportedRoles {
   WITHOUT_ROLE = 'SIN_ROL',
   ADMIN = 'ADMINISTRADOR',

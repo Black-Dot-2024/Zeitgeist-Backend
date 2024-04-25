@@ -30,6 +30,9 @@ jobs:
       - name: Prisma Generate
         run: pnpm run prisma:generate
 
+      - name: Linter
+        run: pnpm run lint
+
       - name: Compile
         run: pnpm run build
 

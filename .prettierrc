@@ -8,5 +8,6 @@
   "jsxSingleQuote": true,
   "printWidth": 120,
   "breakBeforeElse": true,
-  "plugins": ["prettier-plugin-jsdoc", "prettier-plugin-organize-imports"]
+  "plugins": ["prettier-plugin-jsdoc", "prettier-plugin-organize-imports"],
+  "endOfLine": "auto"
 }

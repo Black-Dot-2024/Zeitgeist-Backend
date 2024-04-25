@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto';
 import sinon from 'sinon';
 import { CompanyRepository } from '../../../infra/repositories/company.repository';
 import { ProjectRepository } from '../../../infra/repositories/project.repository';
-import { CompanyService } from '../company.services';
+import { CompanyService } from '../company.service';
 
 chai.use(chaiAsPromised);
 

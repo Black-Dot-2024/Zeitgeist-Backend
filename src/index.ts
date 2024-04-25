@@ -19,9 +19,9 @@ const CLIENT_URL = process.env[EnvConfigKeys.CLIENT_URL];
 app.use(
   cors({
     origin: CLIENT_URL,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
-    allowedHeaders: "Content-Type, Authorization",
+    allowedHeaders: 'Content-Type, Authorization',
   })
 );
 

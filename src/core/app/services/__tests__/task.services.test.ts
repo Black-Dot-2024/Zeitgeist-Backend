@@ -5,7 +5,7 @@ import { TaskStatus } from '../../../../utils/enums';
 import { BareboneTask, Task } from '../../../domain/entities/task.entity';
 import { ProjectRepository } from '../../../infra/repositories/project.repository';
 import { TaskRepository } from '../../../infra/repositories/tasks.repository';
-import { TaskService } from '../task.services';
+import { TaskService } from '../task.service';
 
 describe('TaskService', () => {
   let taskRepositoryStub: sinon.SinonStub;
@@ -66,7 +66,6 @@ describe('TaskService', () => {
         expect(error).to.be.an('error');
         expect(error.message).to.equal('Project does not exist');
       }
-
     });
 
     it('Should return null if the task already exists', async () => {

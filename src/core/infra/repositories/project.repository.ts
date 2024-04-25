@@ -45,7 +45,7 @@ async function findProjectStatusById(id: string) {
 
 async function findById(id: string): Promise<ProjectEntity> {
   try {
-    let data = await Prisma.project.findUnique({
+    const data = await Prisma.project.findUnique({
       where: {
         id: id,
       },
@@ -69,7 +69,7 @@ async function findById(id: string): Promise<ProjectEntity> {
 
 async function findProjetsByClientId(clientId: string): Promise<ProjectEntity[]> {
   try {
-    let data = await Prisma.project.findMany({
+    const data = await Prisma.project.findMany({
       where: {
         id_company: clientId,
       },

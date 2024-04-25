@@ -3,11 +3,11 @@ import admin from '../../config/firebase-admin.config';
 
 /**
  * Middleware to check if the user is authorized and has a valid token
- * 
- * @param req 
- * @param res 
- * @param next 
- * @returns 
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @returns
  */
 export const checkAuthToken = (req: Request, res: Response, next: NextFunction) => {
   const authToken = req.headers.authorization;

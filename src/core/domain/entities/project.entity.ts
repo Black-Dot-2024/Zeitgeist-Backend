@@ -1,4 +1,4 @@
-import { Decimal } from "@prisma/client/runtime/library";
+import { Decimal } from '@prisma/client/runtime/library';
 
 /**
  * @brief Esta clase es para establecer la estructura de la entidad proyecto
@@ -24,7 +24,6 @@ import { Decimal } from "@prisma/client/runtime/library";
  * @description La estructura basicamente es lo que esta en el MER,
  * se tiene la idea usar tipos de datos personalizados, como UUID.
  */
-
 
 export interface ProjectEntity {
   /**

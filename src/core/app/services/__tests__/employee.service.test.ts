@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import { SupportedRoles } from '../../../../utils/enums';
 import { EmployeeRepository } from '../../../infra/repositories/employee.repository';
 import { RoleRepository } from '../../../infra/repositories/role.repository';
-import { EmployeeService, SignIn } from '../employee.services';
+import { EmployeeService, SignIn } from '../employee.service';
 chai.use(chaiAsPromised);
 
 describe('EmployeeService', () => {

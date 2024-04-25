@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CompanyService } from '../../core/app/services/company.services';
+import { CompanyService } from '../../core/app/services/company.service';
 
 /**
  * @param {Request} req

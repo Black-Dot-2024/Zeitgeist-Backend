@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { updateUserRole as updateUserRoleService } from '../../core/app/services/admin-role.services';
+import { updateUserRole as updateUserRoleService } from '../../core/app/services/admin-role.service';
 
 // Defines a schema for validations
 const updateUserRoleSchema = z.object({
