@@ -11,7 +11,8 @@
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP,
         id_department uuid,
-        id_role uuid NOT NULL
+        id_role uuid NOT NULL,
+        device_token VARCHAR(255)
     );
 
     CREATE TABLE Role (

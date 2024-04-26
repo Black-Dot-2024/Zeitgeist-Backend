@@ -10,6 +10,7 @@
  * @param updatedAt: Date
  * @param idDepartment: string
  * @param idRole: string
+ * @param deviceToken: string
  *
  * @return void
  *
@@ -62,4 +63,9 @@ export interface EmployeeEntity {
    * @param idRole string: The id of the role of the employee.
    */
   idRole: string;
+
+  /**
+   * @param deviceToken string: The device token of the employee.
+   */
+  deviceToken?: string;
 }

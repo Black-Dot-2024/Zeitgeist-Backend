@@ -61,6 +61,7 @@ model employee {
   updated_at            DateTime?               @db.Timestamp(6)
   id_department         String?                 @db.Uuid
   id_role               String                  @db.Uuid
+  device_token          String?                 @db.VarChar(255)
   comment               comment[]
   department            department?             @relation(fields: [id_department], references: [id], onDelete: NoAction, onUpdate: NoAction)
   role                  role                    @relation(fields: [id_role], references: [id], onDelete: NoAction, onUpdate: NoAction)
