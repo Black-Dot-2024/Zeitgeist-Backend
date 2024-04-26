@@ -8,5 +8,6 @@ const router = Router();
 
 router.post('/signup', checkAuthToken, EmployeeController.userExists);
 router.get('/', checkAuthToken, checkAuthRole([SupportedRoles.ADMIN]), EmployeeController.getAllEmployees);
+router.get('/:email', checkAuthToken, EmployeeController.getEmployeeByEmail);
 
 export { router as EmployeeRouter };

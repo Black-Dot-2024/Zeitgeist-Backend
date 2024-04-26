@@ -54,4 +54,25 @@ async function getAllEmployees(req: Request, res: Response) {
   }
 }
 
-export const EmployeeController = { userExists: signIn, getAllEmployees };
+/**
+ * Function to get the employee by email
+ *
+ * @param req: Request - Request object
+ * @param res: Response - Response object
+ */
+async function getEmployeeByEmail(req: Request, res: Response) {
+  try {
+    const email = req.params.email;
+
+    const employee = await EmployeeService.getEmployeeByEmail(email);
+    res.status(200).json({ data: employee });
+  } catch (error: any) {
+    if (error instanceof NotFoundError) {
+      res.status(404).json({ message: 'Employee not found for the provided email.' });
+    } else {
+      res.status(500).json({ message: 'Internal server error occurred.' });
+    }
+  }
+}
+
+export const EmployeeController = { userExists: signIn, getAllEmployees, getEmployeeByEmail };

@@ -130,4 +130,24 @@ async function findRoleByEmail(email: string): Promise<SupportedRoles> {
   return role.title as SupportedRoles;
 }
 
-export const EmployeeService = { signIn, getAllEmployees, findRoleByEmail };
+/**
+ * Function to get the employee by email
+ *
+ * @param email: string - Email of the employee
+ * @returns {EmployeeEntity} - Employee data
+ */
+async function getEmployeeByEmail(email: string): Promise<EmployeeEntity> {
+  try {
+    const data = await EmployeeRepository.findByEmail(email);
+
+    if (!data) {
+      throw new NotFoundError('Employee');
+    }
+
+    return data;
+  } catch (error: any) {
+    throw new Error('Employee repository error');
+  }
+}
+
+export const EmployeeService = { signIn, getAllEmployees, findRoleByEmail, getEmployeeByEmail };
