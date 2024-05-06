@@ -15,12 +15,14 @@ describe('CompanyService', () => {
   let findAllProjectsStub: sinon.SinonStub;
   let updateCompanyStub: sinon.SinonStub;
   let findCompanyByIdStub: sinon.SinonStub;
+  let findArchivedCompaniesStub: sinon.SinonStub;
 
   beforeEach(() => {
     findAllProjectsStub = sinon.stub(ProjectRepository, 'findAll');
     findAllCompaniesStub = sinon.stub(CompanyRepository, 'findAll');
     updateCompanyStub = sinon.stub(CompanyRepository, 'update');
     findCompanyByIdStub = sinon.stub(CompanyRepository, 'findById');
+    findArchivedCompaniesStub = sinon.stub(CompanyRepository, 'findArchived');
   });
 
   afterEach(() => {
@@ -93,6 +95,17 @@ describe('CompanyService', () => {
     expect(findCompanyByIdStub.calledWith(idCompany1)).to.be.true;
     expect(aCompany).to.eql(company);
   });
+
+  it('should get all archived companies', async () => {
+    const mockData = prepareMockData();
+    findArchivedCompaniesStub.resolves(mockData.archivedCompanies);
+    findAllProjectsStub.resolves(mockData.existingProjects);
+
+    const res = await CompanyService.findArchived();
+
+    expect(res).to.equal(mockData.archivedCompanies);
+    expect(res).to.have.lengthOf(1);
+  });
 });
 
 function prepareMockData() {
@@ -158,7 +171,25 @@ function prepareMockData() {
     },
   ];
 
-  return { existingCompanies, existingProjects };
+  const archivedCompanies = [
+    {
+      id: idCompany1,
+      name: 'Bimbo3',
+      email: 'sdlkfjlkd@xn--sdkfj-pta.com',
+      phoneNumber: '123456789012345',
+      landlinePhone: '7771234567890',
+      archived: true,
+      constitutionDate: new Date(),
+      rfc: 'VECJ880326',
+      taxResidence: 'mx',
+      createdAt: new Date(),
+      updatedAt: null,
+      idCompanyDirectContact: null,
+      idForm: null,
+    },
+  ];
+
+  return { existingCompanies, existingProjects, archivedCompanies };
 }
 
 function prepareSingleFakeCompany() {
