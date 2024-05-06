@@ -92,4 +92,19 @@ async function create(req: Request, res: Response) {
     } else res.status(500).json({ error: error.message });
   }
 }
-export const CompanyController = { getUnique, getAll, create, updateClient };
+
+/**
+ * Receives a request to get all Archived Clients
+ * @param req
+ * @param res
+ */
+
+async function getArchived(req: Request, res: Response) {
+  try {
+    const data = await CompanyService.findArchived();
+    res.status(200).json(data);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+}
+export const CompanyController = { getUnique, getAll, create, updateClient, getArchived };

@@ -7,15 +7,21 @@ import { checkAuthRole } from '../middlewares/rbac.middleware';
 const router = Router();
 
 router.get(
-  '/:id',
-  checkAuthRole([SupportedRoles.ACCOUNTING, SupportedRoles.LEGAL, SupportedRoles.ADMIN]),
-  CompanyController.getUnique
-);
-
-router.get(
   '/',
   checkAuthRole([SupportedRoles.ACCOUNTING, SupportedRoles.LEGAL, SupportedRoles.ADMIN]),
   CompanyController.getAll
+);
+
+router.get(
+  '/archived',
+  checkAuthRole([SupportedRoles.ACCOUNTING, SupportedRoles.LEGAL, SupportedRoles.ADMIN]),
+  CompanyController.getArchived
+);
+
+router.get(
+  '/:id',
+  checkAuthRole([SupportedRoles.ACCOUNTING, SupportedRoles.LEGAL, SupportedRoles.ADMIN]),
+  CompanyController.getUnique
 );
 
 router.put(

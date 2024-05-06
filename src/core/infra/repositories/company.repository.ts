@@ -109,4 +109,30 @@ async function update(company: CompanyEntity): Promise<CompanyEntity> {
   }
 }
 
-export const CompanyRepository = { findAll, findById, update, create };
+/**
+ * Finds all company entities in the database
+ * @version 1.0.0
+ * @returns {Promise<CompanyEntity[]>} a promise taht resolves to an array of company entities
+ */
+async function findArchived(): Promise<CompanyEntity[]> {
+  try {
+    const data = await Prisma.company.findMany({
+      where: {
+        archived: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    if (!data) {
+      throw new NotFoundError(RESOURCE_NAME);
+    }
+
+    return data.map(mapCompanyEntityFromDbModel);
+  } catch (error: any) {
+    throw new Error(`${RESOURCE_NAME} repository error: ${error.message}`);
+  }
+}
+
+export const CompanyRepository = { findAll, findById, update, create, findArchived };
