@@ -8,11 +8,14 @@ const RESOURCE_NAME = 'Company';
 /**
  * Finds all company entities in the database
  * @version 1.0.0
- * @returns {Promise<CompanyEntity[]>} a promise taht resolves to an array of company entities
+ * @returns {Promise<CompanyEntity[]>} a promise that resolves to an array of company entities
  */
 async function findAll(): Promise<CompanyEntity[]> {
   try {
     const data = await Prisma.company.findMany({
+      where: {
+        archived: false,
+      },
       orderBy: {
         name: 'asc',
       },
@@ -110,9 +113,9 @@ async function update(company: CompanyEntity): Promise<CompanyEntity> {
 }
 
 /**
- * Finds all company entities in the database
+ * Finds all archived company entities in the database
  * @version 1.0.0
- * @returns {Promise<CompanyEntity[]>} a promise taht resolves to an array of company entities
+ * @returns {Promise<CompanyEntity[]>} a promise that resolves to an array of company entities
  */
 async function findArchived(): Promise<CompanyEntity[]> {
   try {
