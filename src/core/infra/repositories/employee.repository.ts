@@ -1,7 +1,7 @@
-import { Prisma } from '../../..';
 import { EmployeeEntity } from '../../domain/entities/employee.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { mapEmployeeEntityFromDbModel } from '../mappers/employee-entity-from-db-model.mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 const RESOURCE_NAME = 'Employee';
 

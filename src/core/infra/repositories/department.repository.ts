@@ -1,7 +1,7 @@
-import { Prisma } from '../../..';
 import { DepartmentEntity } from '../../domain/entities/department.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { mapDepartmentEntityFromDbModelToDbModel } from '../mappers/department-entity-from-db-model.mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 async function findById(id: string): Promise<DepartmentEntity> {
   try {

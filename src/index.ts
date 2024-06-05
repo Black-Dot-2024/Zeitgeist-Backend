@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import 'dotenv/config';
 import express, { Express } from 'express';
@@ -6,7 +5,6 @@ import { baseRouter } from './api/routes/index.routes';
 import { EnvConfigKeys } from './utils/constants';
 import { logger } from './utils/logger';
 
-export const Prisma: PrismaClient = new PrismaClient();
 const app: Express = express();
 
 const HOST: string = process.env[EnvConfigKeys.HOST] || 'localhost';
