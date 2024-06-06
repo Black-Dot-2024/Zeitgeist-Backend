@@ -1,7 +1,7 @@
-import { Prisma } from '../../..';
 import { CompanyEntity } from '../../domain/entities/company.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { mapCompanyEntityFromDbModel } from '../mappers/company-entity-from-db-model.mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 const RESOURCE_NAME = 'Company';
 

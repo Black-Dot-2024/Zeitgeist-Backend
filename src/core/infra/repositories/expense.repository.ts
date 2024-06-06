@@ -1,4 +1,3 @@
-import { Prisma } from '../../..';
 import { ExpenseReportStatus } from '../../../utils/enums';
 import { ExpenseEntity, ExpenseReport } from '../../domain/entities/expense.entity';
 import { NotFoundError } from '../../errors/not-found.error';
@@ -6,6 +5,7 @@ import {
   mapExpenseEntityFromDbModel,
   mapExpenseReportEntityFromDbModel,
 } from '../mappers/expense-entity-from-db-model.mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 const RESOURCE_NAME = 'Expense report';
 

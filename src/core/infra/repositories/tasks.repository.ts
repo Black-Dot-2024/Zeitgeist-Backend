@@ -1,8 +1,8 @@
-import { Prisma } from '../../..';
 import { TaskStatus } from '../../../utils/enums';
 import { Task, UpdatedTask } from '../../domain/entities/task.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { mapTaskEntityFromDbModel } from '../mappers/task-entity-from-db-model-mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 const RESOURCE_NAME = 'Task';
 

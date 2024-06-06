@@ -1,9 +1,9 @@
 import { Decimal } from '@prisma/client/runtime/library';
-import { Prisma } from '../../..';
 import { ProjectStatus, SupportedDepartments, SupportedRoles } from '../../../utils/enums';
 import { ProjectEntity } from '../../domain/entities/project.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { mapProjectEntityFromDbModel } from '../mappers/project-entity-from-db-model-mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 const RESOURCE_NAME = 'Project info';
 

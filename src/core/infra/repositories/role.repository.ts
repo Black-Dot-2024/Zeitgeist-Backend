@@ -1,8 +1,8 @@
-import { Prisma } from '../../..';
 import { SupportedRoles } from '../../../utils/enums';
 import { RoleEntity } from '../../domain/entities/role.entity';
 import { NotFoundError } from '../../errors/not-found.error';
 import { mapRoleEntityFromDbModelToDbModel } from '../mappers/role-entity-from-db-model.mapper';
+import { Prisma } from '../providers/prisma.provider';
 
 /**
  * Retrieves the role of an employee by email
